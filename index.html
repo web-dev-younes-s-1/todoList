@@ -51,6 +51,7 @@
             padding: 12px 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.325);
+            transition: all .5s;
         }
 
         .edit {
@@ -76,13 +77,14 @@
         }
 
         .ceck {
-            box-shadow: 0 0 10px rgba(74, 233, 74, 0.272);
+            
+            box-shadow: 0 0 10px rgba(29, 90, 29, 0.272);
             background-color: rgba(74, 233, 74, 0.272);
 
         }
 
         .ceck:hover {
-            box-shadow: 0 0 15px rgba(57, 169, 57, 0.542);
+            box-shadow: 0 0 10px rgba(34, 110, 34, 0.272);
             background-color: rgba(74, 233, 74, 0.272);
 
         }
@@ -193,10 +195,6 @@
             .container{
                 width: 90%;
             }
-            .taskField{
-                /* flex-direction: column;
-                gap: 20px; */
-            }
             .btnField{
                 flex-direction: column;
             }
@@ -209,6 +207,7 @@
             }
             .btnField{
                 font-family:cursive !important;
+            
             }
         }
     </style>
@@ -280,6 +279,8 @@
             if (thisStatus) {
                 btn2Node.setAttribute("class", 'ceck')
                 btn2Node.innerHTML = checkIcon
+                newSectionNode.style.backgroundColor = 'rgba(119, 245, 119, 0.24)'
+                
 
             } else {
                 btn2Node.setAttribute("class", 'cecked')
@@ -327,7 +328,6 @@
                 mainObj[id].status = false
             } else {
                 mainObj[id].status = true
-
             }
 
         }
@@ -435,9 +435,11 @@
                 thisObj.removeAttribute("class")
                 thisObj.setAttribute("class", "cecked")
                 thisObj.appendChild(newInode)
+                parent.style.backgroundColor = 'whitesmoke'
                 refrechStatus(parent.id)
                 updateTape()
                 addToLocalStorage()
+                
             } else if (thisObj.classList.contains("cecked")) {
                 let iNode = thisObj.firstChild
                 thisObj.removeChild(iNode)
@@ -446,6 +448,7 @@
                 thisObj.removeAttribute("class")
                 thisObj.setAttribute("class", "ceck")
                 thisObj.appendChild(newInode)
+                parent.style.backgroundColor = 'rgba(119, 245, 119, 0.24)'
                 refrechStatus(parent.id)
                 updateTape()
                 addToLocalStorage()
