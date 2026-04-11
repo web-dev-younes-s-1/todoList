@@ -31,9 +31,6 @@
             flex-direction: column;
             flex-grow: 1;
             gap: 10px;
-            /* padding: 10px; */
-            /* background-color: skyblue; */
-            /* border: 5px solid white; */
         }
 
         body {
@@ -183,6 +180,27 @@
             width: 100%;
             justify-content: space-between;
             margin-bottom: 1px;
+        }
+        .container{
+            box-shadow: -10px 10px 10px rgba(255, 255, 255, 0.311);
+            border-radius: 12px;
+        }
+
+        @media (max-width: 540px){
+            header{
+                width: 100%;
+            }
+            .container{
+                width: 90%;
+            }
+            
+            .btnField{
+                flex-direction: column;
+            }
+            .task_title{
+                margin: auto;
+                max-width: 148px;
+            }
         }
     </style>
 </head>
