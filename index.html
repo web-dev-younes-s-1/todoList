@@ -6,17 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        #btn {
-            transition: all .5s;
+        * {
+            transition: all .5s !important;
         }
 
-        #btn:hover {
+        #btn,
+        #darkModeParent,
+        #gearISparent {
+            transition: all .5s;
+            color: orange !important;
+        }
+
+        #btn:hover,
+        #darkModeParent:hover,
+        #gearISparent:hover {
             color: rgb(167, 110, 5) !important;
 
         }
-        #field{
+
+        #field {
             height: fit-content;
-            max-height: 400px;
+            max-height: 350px;
             overflow-x: visible;
             overflow-y: auto;
             padding: 10px;
@@ -35,10 +45,12 @@
 
         body {
             background-color: #1b0044;
+            margin: 0;
         }
 
         .taskesField {
             background-color: whitesmoke;
+
             height: fit-content;
         }
 
@@ -77,7 +89,7 @@
         }
 
         .ceck {
-            
+
             box-shadow: 0 0 10px rgba(29, 90, 29, 0.272);
             background-color: rgba(74, 233, 74, 0.272);
 
@@ -121,24 +133,24 @@
 
         header {
             width: 100%;
-            height: 25px;
+            height: fit-content;
             /* background-color: #522e91; */
             width: 500px;
-            padding: 3px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
         .btn {
-            color: orange;
+            color: orange !important;
             font-size: 30px;
         }
 
         .taskesField {
             border-radius: 10px;
             overflow: hidden;
-            padding: 15px 10px;
+            padding: 5px 15px 10px 15px;
             background-color: whitesmoke;
             display: flex;
             flex-direction: column;
@@ -183,31 +195,127 @@
             justify-content: space-between;
             margin-bottom: 1px;
         }
-        .container{
+
+        .container {
             box-shadow: -10px 10px 10px rgba(255, 255, 255, 0.311);
+            box-shadow: -10px 10px 10px rgba(134, 134, 134, 0.75);
+
             border-radius: 12px;
         }
 
-        @media (max-width: 540px){
-            header{
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 40px;
+            height: 21px;
+            background-color: #ccc;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: 0.3s;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #4CAF50;
+        }
+
+        input[type="checkbox"]:checked::before {
+            left: 22px;
+        }
+
+        .bottom_max {
+            width: 100%;
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .settings,
+        #darkModeParent {
+            background-color: rgba(255, 255, 255, 0);
+            border: none;
+            cursor: pointer;
+        }
+
+        .up_header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 5px;
+
+        }
+
+        .up_header span {
+            transform: translateX(-10px);
+        }
+
+        .header_status {
+            display: flex;
+            gap: 5px;
+            /* margin-bottom: 5px; */
+        }
+
+        .header_status span {
+            cursor: pointer;
+            border: 1px black solid;
+            padding: 1px 10px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+            transition: all .5s;
+        }
+
+        .header_status span:hover {
+            background-color: rgba(0, 0, 0, 0.213);
+        }
+
+        #gear,
+        #darkMode {
+            font-size: 18px;
+        }
+
+
+
+        @media (max-width: 540px) {
+            header {
                 width: 100%;
             }
-            .container{
+
+            .container {
                 width: 90%;
             }
-            .btnField{
+
+            .btnField {
                 flex-direction: column;
             }
-            .task_title{
+
+            .task_title {
                 margin: auto;
                 max-width: 148px;
             }
-            span, .percent{
+
+            span,
+            .percent {
                 font-family: sans-serif !important;
             }
-            .btnField{
-                font-family:cursive !important;
-            
+
+            .btnField {
+                font-family: cursive !important;
+
             }
         }
     </style>
@@ -217,16 +325,31 @@
     <div id="container" class="container">
         <section id="taskesField" class="taskesField">
             <header>
-                <span style="margin: auto; color: black; font-weight: 800; font-family: cursive  ">My Tasks</span>
-                <button class="btn" id="btn"
-                    style="margin-right: 10px; width: fit-content; background: none; border: none; cursor: pointer;   ">+</button>
+                <div class="up_header">
+                    <div>
+                        <button id="gearISparent" class="settings"><i id="gear" class="fa-solid fa-gear"></i></button>
+                        <button onclick="darkMode()" id="darkModeParent"><i id="darkMode"
+                                class="fa-solid fa-moon"></i></button>
+                    </div>
+                    <span style="margin: auto; color: black; font-weight: 800; font-family: cursive  ">My Tasks</span>
+                    <button class="btn" id="btn"
+                        style="margin-right: 10px; width: fit-content; background: none; border: none; cursor: pointer;   ">
+                        +
+                    </button>
+                </div>
+                <div class="header_status">
+                    <span>All</span>
+                    <span>Pending</span>
+                    <span>Finished</span>
+                </div>
             </header>
             <main id="field">
 
             </main>
+
             <footer>
-                <div class="percent">
-                    <div><span id="numberOfTasks">0</span> task still remaining</div>
+                <div id="percent" class="percent">
+                    <div><span id="numberOfTasks">0</span> <span>task still remaining</span></div>
                     <span id="idPercent">0%</span>
                 </div>
                 <div id="outSpace" class="outSpace">
@@ -234,7 +357,11 @@
 
                     </div>
                 </div>
+                <div class="bottom_max">
+                    <input id="checkbox" type="checkbox">
+                </div>
             </footer>
+
         </section>
     </div>
 
@@ -245,6 +372,10 @@
         const editIcon = '<i class="fa-regular fa-pen-to-square"></i>'
         const checkIcon = '<i class="fa-solid fa-check"></i>'
         const Xicon = '<i class="fa-solid fa-x"></i>'
+        const gear = document.getElementById("gear")
+        const gearISparent = document.getElementById("gearISparent")
+        let colorX = 'whitesmoke'
+        let mode = false
         let saved = localStorage.getItem('listOfTasks')
         let mainObj = {
             "id0": {
@@ -256,6 +387,7 @@
         if (saved) {
             mainObj = JSON.parse(saved)
         }
+
 
         for (let obj in mainObj) {
             let thisTitle = mainObj[obj].title
@@ -280,7 +412,7 @@
                 btn2Node.setAttribute("class", 'ceck')
                 btn2Node.innerHTML = checkIcon
                 newSectionNode.style.backgroundColor = 'rgba(119, 245, 119, 0.24)'
-                
+
 
             } else {
                 btn2Node.setAttribute("class", 'cecked')
@@ -306,6 +438,7 @@
         }
 
 
+
         function addToLocalStorage() {
             localStorage.setItem('listOfTasks', JSON.stringify(mainObj))
         }
@@ -320,6 +453,11 @@
 
         function refrechTitle(id, newTitle) {
             mainObj[id].title = newTitle
+        }
+
+        mode = JSON.parse(localStorage.getItem("mode"))
+        if (mode) {
+            ResetDarkMode()
         }
 
 
@@ -346,18 +484,18 @@
                     falseObjects++
                 }
 
-                
+
             }
             document.getElementById("numberOfTasks").textContent = falseObjects
             let percent = (trueObjects * 100) / (trueObjects + falseObjects)
             let numberFieldNode = document.getElementById("idPercent")
             document.getElementById("insideSpace").style.width = `${percent.toFixed(0)}%`
-            if (Object.keys(mainObj).length === 0){
+            if (Object.keys(mainObj).length === 0) {
                 numberFieldNode.innerHTML = "0%"
 
-            }else{
+            } else {
 
-                numberFieldNode.innerHTML = percent.toFixed(0) +"%"
+                numberFieldNode.innerHTML = percent.toFixed(0) + "%"
             }
         }
 
@@ -409,6 +547,11 @@
             updateTape()
             addToLocalStorage()
 
+            mode = JSON.parse(localStorage.getItem("mode"))
+            if (mode) {
+                ResetDarkMode()
+            }
+
         })
 
         document.addEventListener('click', function (e) {
@@ -435,11 +578,11 @@
                 thisObj.removeAttribute("class")
                 thisObj.setAttribute("class", "cecked")
                 thisObj.appendChild(newInode)
-                parent.style.backgroundColor = 'whitesmoke'
+                parent.style.backgroundColor = colorX
                 refrechStatus(parent.id)
                 updateTape()
                 addToLocalStorage()
-                
+
             } else if (thisObj.classList.contains("cecked")) {
                 let iNode = thisObj.firstChild
                 thisObj.removeChild(iNode)
@@ -465,9 +608,110 @@
                 refrechTitle(parent.id, newTitle)
                 addToLocalStorage()
             }
-            
+
 
         })
+
+
+        gearISparent.addEventListener('mouseover', function () {
+            gear.removeAttribute("class")
+            gear.setAttribute("class", "fa-solid fa-gear fa-spin")
+        })
+        gearISparent.addEventListener('mouseout', function () {
+            gear.removeAttribute("class")
+            gear.setAttribute("class", "fa-solid fa-gear")
+
+        })
+
+
+        function darkMode() {
+            const moonButton = document.getElementById("darkModeParent")
+            const tasks = document.querySelectorAll(".taskField")
+            const moonIcon = document.getElementById("darkMode")
+            const percentDiv = document.getElementById("percent")
+            const evrySpanBtn = document.querySelectorAll("span, button")
+            const evrySpan = document.querySelectorAll("span")
+            const mainBG = document.getElementById("taskesField")
+            if (mode) {
+                mode = false
+
+                evrySpanBtn.forEach(element => {
+                    element.style.color = ""
+                });
+                evrySpan.forEach(element => {
+                    element.style.textShadow = ""
+                });
+                mainBG.style.backgroundImage = 'none'
+                mainBG.style.backgroundColor = 'whitesmoke'
+
+                percentDiv.style.color = ''
+                tasks.forEach(task => {
+                    if (mainObj[task.id].status === false) {
+                        task.style.backgroundColor = "whitesmoke"
+                    }
+                    task.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.325)'
+                });
+                colorX = 'whitesmoke'
+
+            } else {
+                mode = true
+
+                evrySpanBtn.forEach(element => {
+                    element.style.color = "white"
+                });
+
+                evrySpan.forEach(element => {
+                    element.style.textShadow = "0 0 5px white"
+                });
+
+                tasks.forEach(task => {
+                    if (mainObj[task.id].status === false) {
+                        task.style.backgroundColor = "#223755a2"
+                    }
+                    task.style.boxShadow = '0 0 10px rgba(245, 245, 245, 0.303)'
+                });
+
+
+                percentDiv.style.color = '#ffffff'
+                mainBG.style.backgroundImage = "linear-gradient(to top right,#3f3f4e, #252630)"
+                colorX = '#223755a2'
+            }
+            localStorage.setItem("mode", JSON.stringify(mode))
+
+        }
+        function ResetDarkMode() {
+            const moonButton = document.getElementById("darkModeParent")
+            const tasks = document.querySelectorAll(".taskField")
+            const moonIcon = document.getElementById("darkMode")
+            const percentDiv = document.getElementById("percent")
+            const evrySpanBtn = document.querySelectorAll("span, button")
+            const evrySpan = document.querySelectorAll("span")
+            const mainBG = document.getElementById("taskesField")
+
+
+            evrySpanBtn.forEach(element => {
+                element.style.color = "white"
+            });
+
+            evrySpan.forEach(element => {
+                element.style.textShadow = "0 0 5px white"
+            });
+
+            tasks.forEach(task => {
+                if (mainObj[task.id].status === false) {
+                    task.style.backgroundColor = "#223755a2"
+                }
+                task.style.boxShadow = '0 0 10px rgba(245, 245, 245, 0.303)'
+            });
+
+
+            percentDiv.style.color = '#ffffff'
+            mainBG.style.backgroundImage = "linear-gradient(to top right,#3f3f4e, #252630)"
+            colorX = '#223755a2'
+
+        }
+
+
 
 
 
