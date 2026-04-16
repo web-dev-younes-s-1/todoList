@@ -13,6 +13,10 @@
         * {
             transition: all .5s !important;
         }
+        .insideSpace{
+            transition: all 1s !important;
+
+        }
 
         #btn,
         #darkModeParent,
@@ -338,6 +342,10 @@
             outline: none;
         }
 
+        #mainTitle{
+            text-decoration: underline;
+        }
+
         @media (max-width: 540px) {
             header {
                 width: 100%;
@@ -348,7 +356,7 @@
             }
 
             .btnField {
-                flex-direction: column;
+                flex-direction: row;
             }
 
             .task_title {
@@ -411,9 +419,9 @@
                     </div>
                 </div>
                 <div class="bottom_max">
-                    <span id="ar" class="ar">Ar</span>
-                    <span id="en" class="en">En</span>
-                    <span id="circle" class="circle"><i class="fa-regular fa-circle"></i></span>
+                    <!-- <span id="ar" class="ar">Ar</span> -->
+                    <!-- <span id="en" class="en">En</span> -->
+                    <!-- <span id="circle" class="circle"><i class="fa-regular fa-circle"></i></span> -->
                 </div>
 
             </footer>
@@ -489,11 +497,14 @@
                 btn2Node.setAttribute("class", 'cecked')
                 btn2Node.innerHTML = Xicon
                 newSectionNode.style.backgroundColor = 'rgba(119, 245, 119, 0.24)'
-
-
+                btn1Node.style.display = 'none'
+                newSpanNode.style.textDecoration = "line-through"
+                
+                
             } else {
                 btn2Node.setAttribute("class", 'ceck')
                 btn2Node.innerHTML = checkIcon
+                btn1Node.style.display = 'inherit'
 
             }
             let btn3Node = document.createElement("button")
@@ -649,9 +660,12 @@
 
 
         document.addEventListener('click', function (e) {
-            let thisObj = e.target
-            let parent = e.target.closest(".taskField")
+            
+            const thisObj = e.target
             if (thisObj.classList.contains("cecked")) {
+                const parent = e.target.closest(".taskField")
+                const editIcon = parent.querySelector(".edit")
+                const title = parent.querySelector(".task_title")
                 let iNode = thisObj.firstChild
                 thisObj.removeChild(iNode)
                 let newInode = document.createElement('i')
@@ -660,11 +674,16 @@
                 thisObj.setAttribute("class", "ceck")
                 thisObj.appendChild(newInode)
                 parent.style.backgroundColor = colorX
+                editIcon.style.display = 'inherit'
+                title.style.textDecoration = 'none'
                 refrechStatus(parent.id)
                 updateTape()
                 addToLocalStorage()
-
+                
             } else if (thisObj.classList.contains("ceck")) {
+                const parent = e.target.closest(".taskField")
+                const editIcon = parent.querySelector(".edit")
+                const title = parent.querySelector(".task_title")
                 let iNode = thisObj.firstChild
                 thisObj.removeChild(iNode)
                 let newInode = document.createElement('i')
@@ -673,6 +692,10 @@
                 thisObj.setAttribute("class", "cecked")
                 thisObj.appendChild(newInode)
                 parent.style.backgroundColor = 'rgba(119, 245, 119, 0.24)'
+                editIcon.style.display = 'none'
+                title.style.textDecoration = 'line-through'
+
+
                 refrechStatus(parent.id)
                 updateTape()
                 addToLocalStorage()
@@ -788,22 +811,27 @@
                 task.style.boxShadow = '0 0 10px rgba(245, 245, 245, 0.303)'
             });
 
-
+            focusBGC = "rgba(255, 255, 255, 0.229)"
+            focusBoxShadow = "0 0 10px white"
+            UnfocusBGC = "rgba(0, 0, 0, 0.1)"
+            UnfocusBoxShadow = "none"
+            allBtn.style.backgroundColor = focusBGC
+            allBtn.style.boxShadow = focusBoxShadow
             percentDiv.style.color = '#ffffff'
             mainBG.style.backgroundImage = "linear-gradient(to top right,#3f3f4e, #252630)"
             colorX = '#223755a2'
         }
 
-        const ar = document.getElementById("ar")
-        const en = document.getElementById("en")
-        const circle = document.getElementById("circle")
-        en.addEventListener("click", function () {
-            circle.style.right = '-12px'
-        })
-        ar.addEventListener("click", function () {
-            circle.style.right = '24px'
+        // const ar = document.getElementById("ar")
+        // const en = document.getElementById("en")
+        // const circle = document.getElementById("circle")
+        // en.addEventListener("click", function () {
+        //     circle.style.right = '-12px'
+        // })
+        // ar.addEventListener("click", function () {
+        //     circle.style.right = '24px'
 
-        })
+        // })
 
         const clearAllBtn = document.getElementById("clearAllBtn")
         clearAllBtn.addEventListener("click", function () {
@@ -857,26 +885,92 @@
 
 
 
-
-        allBtn.addEventListener("click", function () {
+        function goAll() {
             AllPendingFinishedObj.all = true
             AllPendingFinishedObj.pending = false
             AllPendingFinishedObj.finished = false
+
+            for (let id in mainObj) {
+                let obj = document.getElementById(id)
+                obj.style.display = 'inherit'
+            }
+        }
+        function goPending() {
+            AllPendingFinishedObj.all = false
+            AllPendingFinishedObj.pending = true
+            AllPendingFinishedObj.finished = false
+
+            for (let id in mainObj) {
+                let obj = document.getElementById(id)
+                if (mainObj[id].status) {
+                    obj.style.display = 'none'
+                    continue
+                }
+                obj.style.display = 'inherit'
+            }
+        }
+        function goFinished() {
+            AllPendingFinishedObj.all = false
+            AllPendingFinishedObj.pending = false
+            AllPendingFinishedObj.finished = true
+            for (let id in mainObj) {
+                let obj = document.getElementById(id)
+                if (mainObj[id].status) {
+                    obj.style.display = 'inherit'
+                    continue
+                }
+                obj.style.display = 'none'
+            }
+        }
+        allBtn.addEventListener("click", function () {
+            goAll()
             console.log(AllPendingFinishedObj);
 
         })
         pendingBtn.addEventListener("click", function () {
-            AllPendingFinishedObj.all = false
-            AllPendingFinishedObj.pending = true
-            AllPendingFinishedObj.finished = false
+            goPending()
             console.log(AllPendingFinishedObj);
         })
         finishedBtn.addEventListener("click", function () {
-            AllPendingFinishedObj.all = false
-            AllPendingFinishedObj.pending = false
-            AllPendingFinishedObj.finished = true
+            goFinished()
             console.log(AllPendingFinishedObj);
         })
+
+        document.addEventListener("click", function () {
+            if (AllPendingFinishedObj.all) {
+                goAll()
+                allBtn.style.backgroundColor = focusBGC
+                allBtn.style.boxShadow = focusBoxShadow
+
+                pendingBtn.style.backgroundColor = UnfocusBGC
+                pendingBtn.style.boxShadow = UnfocusBoxShadow
+
+                finishedBtn.style.backgroundColor = UnfocusBGC
+                finishedBtn.style.boxShadow = UnfocusBoxShadow
+            } else if (AllPendingFinishedObj.pending) {
+                goPending()
+                allBtn.style.backgroundColor = UnfocusBGC
+                allBtn.style.boxShadow = UnfocusBoxShadow
+
+                pendingBtn.style.backgroundColor = focusBGC
+                pendingBtn.style.boxShadow = focusBoxShadow
+
+                finishedBtn.style.backgroundColor = UnfocusBGC
+                finishedBtn.style.boxShadow = UnfocusBoxShadow
+            } else if (AllPendingFinishedObj.finished) {
+                goFinished()
+                allBtn.style.backgroundColor = UnfocusBGC
+                allBtn.style.boxShadow = UnfocusBoxShadow
+
+                pendingBtn.style.backgroundColor = UnfocusBGC
+                pendingBtn.style.boxShadow = UnfocusBoxShadow
+
+                finishedBtn.style.backgroundColor = focusBGC
+                finishedBtn.style.boxShadow = focusBoxShadow
+            }
+
+        })
+
 
 
 
